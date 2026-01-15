@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GameState, GamePhase } from '../types';
 import { Button } from './Button';
-import { RefreshCw, Users, AlertTriangle } from 'lucide-react';
+import { RefreshCw, Users, AlertTriangle, RotateCw, Info } from 'lucide-react';
 
 interface GameLoopProps {
   gameState: GameState;
@@ -10,6 +10,12 @@ interface GameLoopProps {
 
 export const GameLoop: React.FC<GameLoopProps> = ({ gameState, onReset }) => {
   const [revealed, setRevealed] = useState(false);
+  
+  // Select random starting player once on mount
+  const [startingPlayer] = useState(() => {
+    const idx = Math.floor(Math.random() * gameState.players.length);
+    return gameState.players[idx];
+  });
 
   const traitors = gameState.players.filter(p => p.isTraitor);
 
@@ -19,28 +25,44 @@ export const GameLoop: React.FC<GameLoopProps> = ({ gameState, onReset }) => {
       <div className="flex-1 flex flex-col items-center justify-center space-y-8">
         {!revealed ? (
           <>
-            <div className="w-24 h-24 rounded-full bg-indigo-500/20 flex items-center justify-center animate-pulse">
-              <Users size={48} className="text-indigo-400" />
-            </div>
-            
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-white">Игра началась!</h2>
-              <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
-                <p className="text-lg leading-relaxed text-slate-300">
-                  По очереди называйте ассоциации к вашему слову.
-                </p>
-                <div className="h-px bg-slate-700 w-full" />
-                <p className="text-sm text-slate-400">
-                  <span className="text-red-400 font-bold">Предатель</span> не знает слова и должен угадать его или не выдать себя.
-                  <br/>
-                  <span className="text-emerald-400 font-bold">Мирные</span> должны найти предателя.
-                </p>
-              </div>
+            <div className="text-center space-y-4">
+               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-widest">
+                 <RotateCw size={14} />
+                 <span>Ход по часовой стрелке</span>
+               </div>
+               
+               <div>
+                 <p className="text-slate-500 text-sm mb-1">Первым начинает</p>
+                 <h2 className="text-4xl font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                   {startingPlayer.name}
+                 </h2>
+               </div>
             </div>
 
-            <div className="pt-8">
-               <p className="text-slate-500 text-sm mb-4">Когда обсуждение закончится:</p>
-               <Button onClick={() => setRevealed(true)} variant="danger" className="w-full max-w-xs">
+            <div className="bg-slate-800/50 p-6 rounded-3xl border border-slate-700/50 text-left w-full backdrop-blur-sm">
+                <div className="flex items-center gap-2 mb-4">
+                  <Info size={20} className="text-indigo-400" />
+                  <h3 className="font-bold text-white">Правила игры</h3>
+                </div>
+                
+                <ul className="space-y-4 text-sm text-slate-300">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs text-slate-400 mt-0.5">1</span>
+                    <span>Каждый игрок называет <strong>одну ассоциацию</strong> к своему слову.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs text-slate-400 mt-0.5">2</span>
+                    <span><span className="text-red-400 font-bold">Предатель</span> не знает слово. Его цель — понять слово и сказать его в свой ход.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs text-slate-400 mt-0.5">3</span>
+                    <span>Голосуйте кто предатель в любой ход</span>
+                  </li>
+                </ul>
+            </div>
+
+            <div className="pt-4 w-full">
+               <Button onClick={() => setRevealed(true)} variant="danger" fullWidth>
                  Показать предателя
                </Button>
             </div>

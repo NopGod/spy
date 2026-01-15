@@ -48,13 +48,13 @@ export const PeekScreen: React.FC<PeekScreenProps> = ({
     <div className="flex flex-col h-full w-full overflow-hidden bg-slate-900 relative">
       
       {/* BACKGROUND LAYER (The Secret) - Fixed Position at Bottom */}
-      <div className="absolute inset-0 flex flex-col justify-end items-center pb-40 z-0 bg-indigo-950">
+      <div className="absolute inset-0 flex flex-col justify-end items-center pb-20 z-0 bg-indigo-950">
         <motion.div 
           style={{ opacity: contentOpacity }}
           className="flex flex-col items-center justify-center p-8 text-center"
         >
            <p className="text-slate-400 font-medium mb-4 uppercase tracking-widest text-xs">
-            Твоя роль
+            {player.isTraitor ? "Твоя роль:" : "Слово раунда:"}
           </p>
          
           <h2 className={`text-4xl font-black mb-2 uppercase ${player.isTraitor ? 'text-red-400/60' : 'text-white'}`}>
@@ -68,7 +68,7 @@ export const PeekScreen: React.FC<PeekScreenProps> = ({
           )}
 
           <p className="text-slate-400 font-medium text-lg border-t border-slate-700/50 pt-4 px-8">
-             {player.isTraitor ? "Не выдавай себя" : "Запомни это слово"}
+             {player.isTraitor ? "Не выдавай себя и угадай слово" : "Запомни это слово"}
           </p>
         </motion.div>
       </div>
