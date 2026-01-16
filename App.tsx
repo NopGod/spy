@@ -31,11 +31,16 @@ const App: React.FC = () => {
     // 2. Select random word object
     const randomWordObj = pool[Math.floor(Math.random() * pool.length)];
     
-    // 3. Select N random traitors
-    const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
-    const traitorIds = new Set(shuffledPlayers.slice(0, traitorCount).map(p => p.id));
+    // 3. Select N random traitors using Fisher-Yates shuffle for unbiased distribution
+    const playersForShuffle = [...players];
+    for (let i = playersForShuffle.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [playersForShuffle[i], playersForShuffle[j]] = [playersForShuffle[j], playersForShuffle[i]];
+    }
     
-    // 4. Update players
+    const traitorIds = new Set(playersForShuffle.slice(0, traitorCount).map(p => p.id));
+    
+    // 4. Update players, preserving original join order
     const playersWithRoles = players.map(p => ({
       ...p,
       isTraitor: traitorIds.has(p.id)

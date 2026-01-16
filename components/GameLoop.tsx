@@ -12,9 +12,14 @@ export const GameLoop: React.FC<GameLoopProps> = ({ gameState, onReset }) => {
   const [revealed, setRevealed] = useState(false);
   
   // Select random starting player once on mount
+  // We explicitly select from the full list of players to ensure it can be anyone (traitor or innocent)
   const [startingPlayer] = useState(() => {
-    const idx = Math.floor(Math.random() * gameState.players.length);
-    return gameState.players[idx];
+    const players = gameState.players;
+    if (!players || players.length === 0) return { id: 'err', name: '?', isTraitor: false };
+    
+    // Pick a random index from 0 to length-1
+    const idx = Math.floor(Math.random() * players.length);
+    return players[idx];
   });
 
   const traitors = gameState.players.filter(p => p.isTraitor);

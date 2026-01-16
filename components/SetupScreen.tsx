@@ -112,7 +112,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStartGame, savedPlay
   const isValid = players.length >= MIN_PLAYERS && selectedCategoryIds.size > 0;
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto p-6 space-y-6 overflow-y-auto pb-32">
+    <div className="flex flex-col h-full max-w-md mx-auto p-4 space-y-6 overflow-y-auto pb-32">
       <div className="text-center space-y-2 mt-4">
         <h1 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-fuchsia-400">
           Тайный Агент
@@ -136,12 +136,12 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStartGame, savedPlay
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Имя игрока"
-            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
           />
           <button 
             onClick={handleAddPlayer}
             disabled={!inputValue.trim()}
-            className="bg-indigo-600 p-3 rounded-xl text-white disabled:opacity-50 active:scale-95 transition-transform"
+            className="shrink-0 bg-indigo-600 p-3 rounded-xl text-white disabled:opacity-50 active:scale-95 transition-transform"
           >
             <Plus size={24} />
           </button>
@@ -159,15 +159,15 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onStartGame, savedPlay
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 className="flex items-center justify-between bg-slate-700/50 px-4 py-3 rounded-xl border border-slate-600"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-full bg-slate-600 flex-shrink-0 flex items-center justify-center border border-slate-500">
                       <span className="text-xs font-bold text-slate-300">
                         {player.name.charAt(0).toUpperCase()}
                       </span>
                   </div>
-                  <span className="font-bold text-lg text-white">{player.name}</span>
+                  <span className="font-bold text-lg text-white truncate">{player.name}</span>
                 </div>
-                <button onClick={() => handleRemovePlayer(player.id)} className="text-slate-400 hover:text-red-400 p-2">
+                <button onClick={() => handleRemovePlayer(player.id)} className="text-slate-400 hover:text-red-400 p-2 shrink-0">
                   <X size={20} />
                 </button>
               </motion.div>
